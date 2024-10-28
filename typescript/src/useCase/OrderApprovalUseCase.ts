@@ -2,7 +2,7 @@ import Order from '../domain/Order';
 import { OrderStatus } from '../domain/OrderStatus';
 import OrderRepository from '../repository/OrderRepository';
 import ApprovedOrderCannotBeRejectedException from '../exception/ApprovedOrderCannotBeRejectedException';
-import OrderApprovalRequest from './OrderApprovalRequest';
+import OrderApprovalRequest from '../request/OrderApprovalRequest';
 import RejectedOrderCannotBeApprovedException from '../exception/RejectedOrderCannotBeApprovedException';
 import ShippedOrdersCannotBeChangedException from '../exception/ShippedOrdersCannotBeChangedException';
 

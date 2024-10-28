@@ -4,7 +4,7 @@ import { OrderStatus } from '../domain/OrderStatus';
 import Product from '../domain/Product';
 import OrderRepository from '../repository/OrderRepository';
 import { ProductCatalog } from '../repository/ProductCatalog';
-import SellItemsRequest from './SellItemsRequest';
+import SellItemsRequest from '../request/SellItemsRequest';
 import UnknownProductException from '../exception/UnknownProductException';
 
 class OrderCreationUseCase {

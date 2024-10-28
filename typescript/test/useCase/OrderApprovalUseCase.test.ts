@@ -1,7 +1,7 @@
 import Order from '../../src/domain/Order';
 import { OrderStatus } from '../../src/domain/OrderStatus';
 import ApprovedOrderCannotBeRejectedException from '../../src/exception/ApprovedOrderCannotBeRejectedException';
-import OrderApprovalRequest from '../../src/useCase/OrderApprovalRequest';
+import OrderApprovalRequest from '../../src/request/OrderApprovalRequest';
 import OrderApprovalUseCase from '../../src/useCase/OrderApprovalUseCase';
 import RejectedOrderCannotBeApprovedException from '../../src/exception/RejectedOrderCannotBeApprovedException';
 import ShippedOrdersCannotBeChangedException from '../../src/exception/ShippedOrdersCannotBeChangedException';
