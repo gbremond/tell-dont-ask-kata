@@ -6,7 +6,7 @@ import { ProductCatalog } from '../../src/repository/ProductCatalog';
 import OrderCreationUseCase from '../../src/useCase/OrderCreationUseCase';
 import SellItemRequest from '../../src/useCase/SellItemRequest';
 import SellItemsRequest from '../../src/useCase/SellItemsRequest';
-import UnknownProductException from '../../src/useCase/UnknownProductException';
+import UnknownProductException from '../../src/exception/UnknownProductException';
 import InMemoryProductCatalog from '../doubles/InMemoryProductCatalog';
 import TestOrderRepository from '../doubles/TestOrderRepository';
 
