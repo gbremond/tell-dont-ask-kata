@@ -20,12 +20,11 @@ describe('OrderShipmentUseCase', () => {
 
   it('shipApprovedOrder', () => {
     const initialOrder: Order = new Order();
-    initialOrder.setId(1);
     initialOrder.setStatus(OrderStatus.APPROVED);
     orderRepository.addOrder(initialOrder);
 
     const request: OrderShipmentRequest = new OrderShipmentRequest();
-    request.setOrderId(1);
+    request.setOrderId(initialOrder.getId());
 
     useCase.run(request);
 
@@ -35,12 +34,11 @@ describe('OrderShipmentUseCase', () => {
 
   it('createdOrdersCannotBeShipped', () => {
     const initialOrder: Order = new Order();
-    initialOrder.setId(2);
     initialOrder.setStatus(OrderStatus.CREATED);
     orderRepository.addOrder(initialOrder);
 
     const request: OrderShipmentRequest = new OrderShipmentRequest();
-    request.setOrderId(2);
+    request.setOrderId(initialOrder.getId());
 
     expect(() => useCase.run(request)).toThrow(OrderCannotBeShippedException);
     expect(orderRepository.getSavedOrder()).toBe(null);
@@ -49,12 +47,11 @@ describe('OrderShipmentUseCase', () => {
 
   it('rejectedOrdersCannotBeShipped', () => {
     const initialOrder: Order = new Order();
-    initialOrder.setId(3);
     initialOrder.setStatus(OrderStatus.REJECTED);
     orderRepository.addOrder(initialOrder);
 
     const request: OrderShipmentRequest = new OrderShipmentRequest();
-    request.setOrderId(3);
+    request.setOrderId(initialOrder.getId());
 
     expect(() => useCase.run(request)).toThrow(OrderCannotBeShippedException);
     expect(orderRepository.getSavedOrder()).toBe(null);
@@ -63,12 +60,11 @@ describe('OrderShipmentUseCase', () => {
 
   it('shippedOrdersCannotBeShippedAgain', () => {
     const initialOrder: Order = new Order();
-    initialOrder.setId(4);
     initialOrder.setStatus(OrderStatus.SHIPPED);
     orderRepository.addOrder(initialOrder);
 
     const request: OrderShipmentRequest = new OrderShipmentRequest();
-    request.setOrderId(4);
+    request.setOrderId(initialOrder.getId());
 
     expect(() => useCase.run(request)).toThrow(OrderCannotBeShippedTwiceException);
     expect(orderRepository.getSavedOrder()).toBe(null);

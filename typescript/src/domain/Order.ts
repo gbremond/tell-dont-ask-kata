@@ -2,7 +2,7 @@ import OrderItem from './OrderItem';
 import {OrderStatus} from './OrderStatus';
 import ShippedOrdersCannotBeChangedException from '../exception/ShippedOrdersCannotBeChangedException';
 import RejectedOrderCannotBeApprovedException from '../exception/RejectedOrderCannotBeApprovedException';
-import ApprovedOrderCannotBeRejectedException from "../exception/ApprovedOrderCannotBeRejectedException";
+import ApprovedOrderCannotBeRejectedException from '../exception/ApprovedOrderCannotBeRejectedException';
 
 class Order {
   private total: number;
@@ -18,14 +18,11 @@ class Order {
     this.items = [];
     this.tax = 0;
     this.status = OrderStatus.CREATED;
+    this.id = Math.floor(Math.random() * 1000000);
   }
 
   public getTotal(): number {
     return this.total;
-  }
-
-  public setTotal(total: number): void {
-    this.total = total;
   }
 
   public getCurrency(): string {
@@ -40,10 +37,6 @@ class Order {
     return this.tax;
   }
 
-  public setTax(tax: number): void {
-    this.tax = tax;
-  }
-
   public getStatus(): OrderStatus {
     return this.status;
   }
@@ -56,10 +49,6 @@ class Order {
     return this.id;
   }
 
-  public setId(id: number): void {
-    this.id = id;
-  }
-
   public addItem(item: OrderItem): void {
     this.items.push(item);
 
@@ -68,9 +57,9 @@ class Order {
   }
 
   public approve(): void {
-    if (this.status === OrderStatus.SHIPPED) {
+    if (this.isShipped()) {
       throw new ShippedOrdersCannotBeChangedException();
-    } else if (this.status === OrderStatus.REJECTED) {
+    } else if (this.isRejected()) {
       throw new RejectedOrderCannotBeApprovedException();
     } else {
       this.status = OrderStatus.APPROVED;
@@ -78,13 +67,29 @@ class Order {
   }
 
   public reject(): void {
-    if (this.status === OrderStatus.SHIPPED) {
+    if (this.isShipped()) {
       throw new ShippedOrdersCannotBeChangedException();
-    } else if (this.status === OrderStatus.APPROVED) {
+    } else if (this.isApproved()) {
       throw new ApprovedOrderCannotBeRejectedException();
     } else {
       this.status = OrderStatus.REJECTED;
     }
+  }
+
+  public ship() : void {
+    this.status = OrderStatus.SHIPPED;
+  }
+
+  public isRejected() {
+    return this.status === OrderStatus.REJECTED;
+  }
+
+  public isApproved() {
+    return this.status === OrderStatus.APPROVED;
+  }
+
+  public isShipped() {
+    return this.status === OrderStatus.SHIPPED;
   }
 }
 
