@@ -2,7 +2,7 @@ import Order from '../domain/Order';
 import OrderItem from '../domain/OrderItem';
 import Product from '../domain/Product';
 import OrderRepository from '../repository/OrderRepository';
-import { ProductCatalog } from '../repository/ProductCatalog';
+import {ProductCatalog} from '../repository/ProductCatalog';
 import SellItemsRequest from '../request/SellItemsRequest';
 import UnknownProductException from '../exception/UnknownProductException';
 
@@ -23,22 +23,8 @@ class OrderCreationUseCase {
 
       if (product === undefined) {
         throw new UnknownProductException();
-      }
-      else {
-        const unitaryTax: number = Math.round(product.getPrice() / 100 * product.getCategory().getTaxPercentage() * 100) / 100;
-        const unitaryTaxedAmount: number = Math.round((product.getPrice() + unitaryTax) * 100) / 100;
-        const taxedAmount: number = Math.round(unitaryTaxedAmount * itemRequest.getQuantity() * 100) / 100;
-        const taxAmount: number = unitaryTax * itemRequest.getQuantity();
-
-        const orderItem: OrderItem = new OrderItem();
-        orderItem.setProduct(product);
-        orderItem.setQuantity(itemRequest.getQuantity());
-        orderItem.setTax(taxAmount);
-        orderItem.setTaxedAmount(taxedAmount);
-        order.getItems().push(orderItem);
-
-        order.setTotal(order.getTotal() + taxedAmount);
-        order.setTax(order.getTax() + taxAmount);
+      } else {
+        order.addItem(new OrderItem(product, itemRequest));
       }
     }
 

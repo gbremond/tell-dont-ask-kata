@@ -33,10 +33,6 @@ class Order {
     return this.items;
   }
 
-  public setItems(items: OrderItem[]): void {
-    this.items = items;
-  }
-
   public getTax(): number {
     return this.tax;
   }
@@ -59,6 +55,13 @@ class Order {
 
   public setId(id: number): void {
     this.id = id;
+  }
+
+  public addItem(item: OrderItem): void {
+    this.items.push(item);
+
+    this.total += item.getTaxedAmount();
+    this.tax += item.getTax();
   }
 }
 
