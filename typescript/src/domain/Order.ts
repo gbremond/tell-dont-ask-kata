@@ -3,6 +3,8 @@ import {OrderStatus} from './OrderStatus';
 import ShippedOrdersCannotBeChangedException from '../exception/ShippedOrdersCannotBeChangedException';
 import RejectedOrderCannotBeApprovedException from '../exception/RejectedOrderCannotBeApprovedException';
 import ApprovedOrderCannotBeRejectedException from '../exception/ApprovedOrderCannotBeRejectedException';
+import OrderCannotBeShippedTwiceException from '../exception/OrderCannotBeShippedTwiceException';
+import OrderCannotBeShippedException from '../exception/OrderCannotBeShippedException';
 
 class Order {
   private total: number;
@@ -76,19 +78,29 @@ class Order {
     }
   }
 
-  public ship() : void {
+  public canBeShipped(): void {
+    if (this.isShipped()) {
+      throw new OrderCannotBeShippedTwiceException();
+    }
+
+    if (!this.isApproved()) {
+      throw new OrderCannotBeShippedException();
+    }
+  }
+
+  public ship(): void {
     this.status = OrderStatus.SHIPPED;
   }
 
-  public isRejected() {
+  public isRejected(): boolean {
     return this.status === OrderStatus.REJECTED;
   }
 
-  public isApproved() {
+  public isApproved(): boolean {
     return this.status === OrderStatus.APPROVED;
   }
 
-  public isShipped() {
+  public isShipped(): boolean {
     return this.status === OrderStatus.SHIPPED;
   }
 }

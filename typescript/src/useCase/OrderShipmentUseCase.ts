@@ -1,9 +1,6 @@
 import Order from '../domain/Order';
-import { OrderStatus } from '../domain/OrderStatus';
 import OrderRepository from '../repository/OrderRepository';
 import { ShipmentService } from '../service/ShipmentService';
-import OrderCannotBeShippedException from '../exception/OrderCannotBeShippedException';
-import OrderCannotBeShippedTwiceException from '../exception/OrderCannotBeShippedTwiceException';
 import OrderShipmentRequest from '../request/OrderShipmentRequest';
 
 class OrderShipmentUseCase {
@@ -18,17 +15,12 @@ class OrderShipmentUseCase {
   public run(request: OrderShipmentRequest): void {
     const order: Order = this.orderRepository.getById(request.getOrderId());
 
-    if (order.getStatus() === OrderStatus.CREATED || order.getStatus() === OrderStatus.REJECTED) {
-      throw new OrderCannotBeShippedException();
-    }
-
-    if (order.getStatus() === OrderStatus.SHIPPED) {
-      throw new OrderCannotBeShippedTwiceException();
-    }
+    order.canBeShipped();
 
     this.shipmentService.ship(order);
 
-    order.setStatus(OrderStatus.SHIPPED);
+    order.ship();
+
     this.orderRepository.save(order);
   }
 }
